@@ -1,4 +1,4 @@
-package sample;
+package app.keyListener;
 
 import javafx.application.Platform;
 

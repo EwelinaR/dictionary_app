@@ -1,0 +1,69 @@
+package app.keyListener;
+
+import app.Observer;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class KeyShortcutFinder implements NativeKeyListener {
+    private int[] shortcut = new int[]{NativeKeyEvent.VC_CONTROL, NativeKeyEvent.VC_C};
+    private List<Integer> pressedKeys = new LinkedList<>();
+    private int lastPressed = -1;
+    private Observer notification;
+
+    public KeyShortcutFinder(Observer notification){
+        initGlobalKeyListener();
+        this.notification = notification;
+    }
+
+    private void initGlobalKeyListener(){
+        // turn off jnativehook logger
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+        // handle events in main thread
+        GlobalScreen.setEventDispatcher(new JavaFxDispatchService());
+        try {
+            GlobalScreen.registerNativeHook();
+        }
+        catch (NativeHookException ex) {
+            System.exit(1);
+        }
+        GlobalScreen.addNativeKeyListener(this);
+    }
+
+    private void checkShortcut(){
+        for(int i = 0; i < shortcut.length; i++){
+            if(pressedKeys.get(i) != shortcut[i]){
+                return;
+            }
+        }
+        notification.update();
+    }
+
+    @Override
+    public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+        int key = nativeKeyEvent.getKeyCode();
+        if(pressedKeys.isEmpty() || lastPressed != key){
+            pressedKeys.add(key);
+            lastPressed = key;
+            if(pressedKeys.size() == shortcut.length){
+                checkShortcut();
+            }
+        }
+    }
+
+    @Override
+    public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
+        int key = nativeKeyEvent.getKeyCode();
+        pressedKeys.remove((Integer)key);
+    }
+
+    @Override
+    public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) { /* unimplemented */ }
+}
