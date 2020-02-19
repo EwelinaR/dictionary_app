@@ -2,27 +2,33 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="250.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.AddingWordController">
    <children>
       <HBox alignment="TOP_CENTER" layoutX="30.0" layoutY="6.0" prefHeight="30.0" prefWidth="533.0">
          <children>
-            <Label fx:id="englishWord" prefHeight="25.0" text="significant" textFill="#09005e" wrapText="true">
-               <HBox.margin>
-                  <Insets left="5.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <font>
-                  <Font name="Segoe UI Bold" size="20.0" />
-               </font>
-            </Label>
+            <VBox alignment="CENTER" prefHeight="200.0">
+               <children>
+                  <Label fx:id="originalPhrase" prefHeight="25.0" text="significant" textFill="#09005e" wrapText="true">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <font>
+                        <Font name="Segoe UI Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="pronunciationImage" fitHeight="25.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </VBox>
             <Label prefHeight="25.0" text="=&gt;" textFill="#5c0200" wrapText="true">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -31,14 +37,28 @@
                   <Font name="Arimo" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="polishWord" prefHeight="25.0" text="znaczący" wrapText="true">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <font>
-                  <Font name="Segoe UI Bold" size="20.0" />
-               </font>
-            </Label>
+            <VBox>
+               <children>
+                  <StackPane>
+                     <children>
+                        <Label fx:id="translatedPhrase" prefHeight="25.0" text="znaczący" wrapText="true">
+                           <padding>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </padding>
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+                  <HBox alignment="TOP_CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" prefWidth="30.0" text="&lt;" />
+                        <Button mnemonicParsing="false" prefWidth="30.0" text="&gt;" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
       </HBox>
       <Label layoutX="582.0" layoutY="8.0" onMouseClicked="#closePopUp" text="X">
@@ -52,6 +72,13 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Label>
-      <ListView fx:id="wordProperties" layoutX="14.0" layoutY="36.0" prefHeight="200.0" prefWidth="318.0" />
+      <ListView fx:id="phraseExamples" layoutX="14.0" layoutY="83.0" prefHeight="153.0" prefWidth="318.0" />
+      <StackPane layoutX="380.0" layoutY="83.0" prefHeight="97.0" prefWidth="143.0">
+         <children>
+            <ImageView fx:id="phraseImage" fitHeight="92.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
+      <Button layoutX="452.0" layoutY="180.0" mnemonicParsing="false" prefWidth="30.0" text="&gt;" />
+      <Button layoutX="422.0" layoutY="180.0" mnemonicParsing="false" prefWidth="30.0" text="&lt;" />
    </children>
 </AnchorPane>

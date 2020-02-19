@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class KeyShortcutFinder implements NativeKeyListener {
-    private int[] shortcut = new int[]{NativeKeyEvent.VC_CONTROL, NativeKeyEvent.VC_C};
+    private int[] shortcut = new int[]{NativeKeyEvent.VC_CONTROL, NativeKeyEvent.VC_SHIFT};
     private List<Integer> pressedKeys = new LinkedList<>();
     private int lastPressed = -1;
     private Observer notification;
@@ -43,11 +43,13 @@ public class KeyShortcutFinder implements NativeKeyListener {
                 return;
             }
         }
+        System.out.println("wykryto skrót");
         notification.update();
     }
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+        System.out.println("press");
         int key = nativeKeyEvent.getKeyCode();
         if(pressedKeys.isEmpty() || lastPressed != key){
             pressedKeys.add(key);
