@@ -50,6 +50,10 @@ public abstract class HtmlParser {
         return result.toString();
     }
 
+    public boolean isValidHtml() {
+        return isValidHtml;
+    }
+
     protected String removeTagAndAttributes(String text){
         String tmp;
         while(text.contains("<")){

@@ -51,9 +51,11 @@ public class AddingWordController implements Observer {
 
     @Override
     public void update() {
-        currentPhrase.setOriginalPhrase(service.getTextFromClipboard());
-        if(service.getPhraseDescription(currentPhrase) == -1)
-            return;
-        service.showWindow();
+        String phrase = service.getTextFromClipboard();
+        if(phrase != null && service.isValidPhrase(phrase)){
+            currentPhrase.setOriginalPhrase(phrase);
+            service.setPhraseDescription(currentPhrase);
+            service.showWindow();
+        }
     }
 }

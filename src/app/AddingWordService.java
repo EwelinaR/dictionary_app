@@ -16,6 +16,7 @@ public class AddingWordService{
     private KeyShortcutFinder keyShortcutFinder;
     private final Clipboard clipboard;
     private NewWindowHandler windowHandler;
+    private HtmlParser parser;
 
     public AddingWordService(){
         clipboard = Clipboard.getSystemClipboard();
@@ -44,13 +45,14 @@ public class AddingWordService{
         phrase.setAllTranslatedPhrases(parser.getTranslatedPhrases());
         phrase.setTranslatedPhrase(phrase.getAllTranslatedPhrases().get(0));
         System.out.println(phrase.getAllTranslatedPhrases().toString());
+        System.out.println(phrase.getOriginalPhrase());
         phrase.setPronunciationImage(parser.getPronunciationImage());
     }
 
-    public int getPhraseDescription(PhraseDescription phrase){
-        HtmlParser parser = new DikiHtmlParser(phrase.getOriginalPhrase().get());
+    public boolean isValidPhrase(String phrase){
+        parser = new DikiHtmlParser(phrase);
         try {
-            URL url = new URL("https://www.diki.pl/"+phrase.getOriginalPhrase().get());
+            URL url = new URL("https://www.diki.pl/"+phrase);
             InputStream is = url.openStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
@@ -60,9 +62,13 @@ public class AddingWordService{
             br.close();
         }
         catch (IOException ie) {
-            return -1;
+            return false;
         }
+        return parser.isValidHtml();
+    }
+
+    public void setPhraseDescription(PhraseDescription phrase){
         setPhraseDescription(phrase, parser);
-        return 0;
+
     }
 }
