@@ -4,8 +4,10 @@ import javafx.scene.image.Image;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DikiHtmlParser extends HtmlParser {
 
@@ -37,10 +39,30 @@ public class DikiHtmlParser extends HtmlParser {
     }
 
     @Override
+    public String getOriginalPhrase(){
+        if(isValidHtml)
+            return originalPhrase;
+        return "";
+    }
+
+    private void setOriginalPhrase(){
+        String container = getTagContent(html, "h1", new String[]{}, new String[]{}).get(0);
+        List<String> phrases = getTagContent(container, "span", new String[]{"class"}, new String[]{"hw"});
+        if(phrases.size() == 1)
+            originalPhrase = removeTagAndAttributes(phrases.get(0));
+        if(phrases.size() > 1) {
+            phrases = phrases.stream().filter(phrase -> !phrase.startsWith("<a")).collect(Collectors.toList());
+            if (phrases.size() > 0)
+                originalPhrase = phrases.get(0);
+        }
+    }
+
+    @Override
     public void setPageContent(BufferedReader br) {
         html = getPartOfPage(getPage(br));
         if(!html.isEmpty()){
             isValidHtml = true;
+            setOriginalPhrase();
         }
     }
 
@@ -48,14 +70,14 @@ public class DikiHtmlParser extends HtmlParser {
     public List<String> getTranslatedPhrases() {
         if(!isValidHtml) return new LinkedList<>();
         List<String> containers = getTagContent(html, "ol", new String[]{"class"}, new String[]{"foreignToNativeMeanings"});
-        if(containers.size() > 0) {
-            List<String> result = (getTagContent(containers.get(0), "span", new String[]{"class"}, new String[]{"hw"}));
-            for(int i = 0; i < result.size(); i++){
-                result.set(i, removeTagAndAttributes(result.get(i)));
+        List<String> phrases, result = new LinkedList<>();
+        for(String container : containers) {
+            phrases = (getTagContent(container, "span", new String[]{"class"}, new String[]{"hw"}));
+            for (String phrase : phrases) {
+                result.add(removeTagAndAttributes(phrase));
             }
-            return result;
         }
-        return new LinkedList<>();
+        return result;
     }
 
     private int getPronunciationImageIndex(String container){
@@ -73,11 +95,12 @@ public class DikiHtmlParser extends HtmlParser {
     private String getPronunciationImageUrl(String container, int index){
         List<String> containers = getTagContent(container, "span", new String[]{"class"}, new String[]{"phoneticTranscription"});
         System.out.println(containers.size() + "   "+ index);
-        String tag = getTag(containers.get(index), "img", new String[]{"class"}, new String[]{"absmiddle"} );
-        if(tag == null){
+        List<String> tag = getTag(container, "img", new String[]{"class"}, new String[]{"absmiddle"} );
+        if(tag == null || tag.size() < index){
             return "";
         }
-        String url = tag.substring(tag.indexOf("src=\"")+5);
+        String url = tag.get(index);
+        url = url.substring(url.indexOf("src=\"")+5);
         return url.substring(0, url.indexOf("\""));
     }
 
@@ -104,6 +127,23 @@ public class DikiHtmlParser extends HtmlParser {
 
     @Override
     public List<Image> getAllPhraseImages() {
-        return null;
+        if(!isValidHtml) return null;
+        List<Image> images = new ArrayList<>();
+
+        List<String> imageTags = getTag(html, "img", new String[]{"class"}, new String[]{"pict"});
+        String url;
+        for(String imgUrl : imageTags){
+            try {
+                url = imgUrl.substring(imgUrl.indexOf("src=\"")+5);
+                url = url.substring(0, url.indexOf("\""));
+                if(url.startsWith("/")){
+                    url = "https://www.diki.pl"+url;
+                }
+                images.add(new javafx.scene.image.Image(url));
+            }catch(IndexOutOfBoundsException | IllegalArgumentException e){
+                return images;
+            }
+        }
+        return images;
     }
 }

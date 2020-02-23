@@ -16,6 +16,7 @@ public abstract class HtmlParser {
         this.originalPhrase = originalPhrase;
     }
     public abstract void setPageContent(BufferedReader br);
+    public abstract String getOriginalPhrase();
     public abstract List<String> getTranslatedPhrases();
     public abstract Image getPronunciationImage();
     public abstract List<String> getExamples();
@@ -81,15 +82,20 @@ public abstract class HtmlParser {
     }
 
 
-    protected String getTag(String html, String tag, String[] attributes, String[] values){
+    protected List<String> getTag(String html, String tag, String[] attributes, String[] values){
         String[] attributesList = getFormattedAttributedList(attributes, values);
-        int nextTagIndex = getFirstMatchTagIndex(html, tag, attributesList);
-        String result = null;
-        if(nextTagIndex != -1){
-            result = html.substring(nextTagIndex);
+        String container = html, result;
+        int nextTagIndex = getFirstMatchTagIndex(container, tag, attributesList);
+
+        List<String> tags = new ArrayList<>();
+        while(nextTagIndex != -1){
+            result = container.substring(nextTagIndex);
             result = result.substring(0, result.indexOf(">")+1);
+            tags.add(result);
+            container = container.substring(nextTagIndex+tag.length());
+            nextTagIndex = getFirstMatchTagIndex(container, tag, attributesList);
         }
-        return result;
+        return tags;
     }
 
     private int getFirstMatchTagIndex(String html, String tag, String[] attributes){

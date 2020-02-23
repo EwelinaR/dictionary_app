@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="250.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.AddingWordController">
+<AnchorPane prefHeight="250.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.AddingWordController">
    <children>
-      <HBox alignment="TOP_CENTER" layoutX="30.0" layoutY="6.0" prefHeight="30.0" prefWidth="533.0">
+      <HBox layoutX="30.0" layoutY="6.0" prefHeight="30.0" prefWidth="533.0">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0">
                <children>
@@ -26,7 +26,7 @@
                         <Font name="Segoe UI Bold" size="20.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="pronunciationImage" fitHeight="25.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="pronunciationImage" fitHeight="20.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </VBox>
             <Label prefHeight="25.0" text="=&gt;" textFill="#5c0200" wrapText="true">
@@ -51,10 +51,19 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <HBox alignment="TOP_CENTER">
+                  <HBox>
                      <children>
-                        <Button mnemonicParsing="false" prefWidth="30.0" text="&lt;" />
-                        <Button mnemonicParsing="false" prefWidth="30.0" text="&gt;" />
+                        <Button minHeight="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" text="&lt;">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="10.0" />
+                           </font></Button>
+                        <Button minHeight="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" text="&gt;">
+                           <font>
+                              <Font size="10.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                </children>

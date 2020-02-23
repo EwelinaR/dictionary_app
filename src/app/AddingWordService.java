@@ -41,12 +41,17 @@ public class AddingWordService{
         return null;
     }
 
-    private void setPhraseDescription(PhraseDescription phrase, HtmlParser parser){
-        phrase.setAllTranslatedPhrases(parser.getTranslatedPhrases());
-        phrase.setTranslatedPhrase(phrase.getAllTranslatedPhrases().get(0));
-        System.out.println(phrase.getAllTranslatedPhrases().toString());
-        System.out.println(phrase.getOriginalPhrase());
-        phrase.setPronunciationImage(parser.getPronunciationImage());
+    public void setPhraseDescription(PhraseDescription phrase){
+        if(parser.isValidHtml()){
+            phrase.setOriginalPhrase(parser.getOriginalPhrase());
+            phrase.setAllTranslatedPhrases(parser.getTranslatedPhrases());
+            System.out.println(phrase.getOriginalPhrase().toString());
+            System.out.println(phrase.getAllTranslatedPhrases().toString());
+            phrase.setPronunciationImage(parser.getPronunciationImage());
+            phrase.setAllPhraseImages(parser.getAllPhraseImages());
+
+            phrase.setDefaults();
+        }
     }
 
     public boolean isValidPhrase(String phrase){
@@ -65,10 +70,5 @@ public class AddingWordService{
             return false;
         }
         return parser.isValidHtml();
-    }
-
-    public void setPhraseDescription(PhraseDescription phrase){
-        setPhraseDescription(phrase, parser);
-
     }
 }

@@ -49,7 +49,6 @@ public class KeyShortcutFinder implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        System.out.println("press");
         int key = nativeKeyEvent.getKeyCode();
         if(pressedKeys.isEmpty() || lastPressed != key){
             pressedKeys.add(key);
@@ -64,6 +63,7 @@ public class KeyShortcutFinder implements NativeKeyListener {
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
         int key = nativeKeyEvent.getKeyCode();
         pressedKeys.remove((Integer)key);
+        lastPressed = -1;
     }
 
     @Override

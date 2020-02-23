@@ -68,10 +68,18 @@ public class PhraseDescription {
     public List<Image> getAllPhraseImages(){
         return allPhraseImages;
     }
-    public void addImage(Image image){
-        this.allPhraseImages.add(image);
+    public void setAllPhraseImages(List<Image> images){
+        this.allPhraseImages = images;
     }
-    public void removeAllImages(){
-        this.allPhraseImages = new ArrayList<>();
+
+    public void setDefaults() {
+        if(allTranslatedPhrases != null && allTranslatedPhrases.size() > 0)
+            setTranslatedPhrase(allTranslatedPhrases.get(0));
+        else
+            setTranslatedPhrase(null);
+        if(allPhraseImages != null && allPhraseImages.size() > 0)
+            setPhraseImage(allPhraseImages.get(0));
+        else
+            setPhraseImage(null);
     }
 }
