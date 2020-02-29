@@ -20,7 +20,6 @@ public class AddingWordService{
 
     public AddingWordService(){
         clipboard = Clipboard.getSystemClipboard();
-
     }
     public void init(Scene scene, Observer observer){
         keyShortcutFinder = new KeyShortcutFinder(observer);
