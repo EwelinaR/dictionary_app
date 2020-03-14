@@ -37,7 +37,12 @@ public class AddingWordWindow implements NewWindowHandler {
     }
 
     public AddingWordWindow(Scene scene){
+        Stage utilityParentStage = new Stage();
+        utilityParentStage.initStyle(StageStyle.UTILITY);
+        utilityParentStage.setOpacity(0);
+        utilityParentStage.show();
         addingWordStage = new Stage();
+        addingWordStage.initOwner(utilityParentStage);
         scene.setFill(Color.TRANSPARENT);
         addingWordStage.initStyle(StageStyle.TRANSPARENT);
         String css = this.getClass().getResource("/resources/css/stylesheet.css").toExternalForm();
