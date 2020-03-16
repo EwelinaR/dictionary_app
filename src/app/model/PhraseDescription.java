@@ -2,15 +2,18 @@ package app.model;
 
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PhraseDescription {
     private StringProperty originalPhrase = new SimpleStringProperty();
     private StringProperty translatedPhrase = new SimpleStringProperty();
-    private SimpleListProperty<String> examples = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private ObservableList<String> examples = FXCollections.observableArrayList();
+    private ObservableList<String> translatedExamples = FXCollections.observableArrayList();
     private ObjectProperty<Image> pronunciationImage = new SimpleObjectProperty<>();
     private ObjectProperty<Image> phraseImage = new SimpleObjectProperty<>();
 
@@ -31,14 +34,32 @@ public class PhraseDescription {
         this.translatedPhrase.set(translatedPhrase);
     }
 
-    public SimpleListProperty<String> getExamples() {
+    public ObservableList<String> getAllExamples() {
         return examples;
     }
-    public void addExample(String example) {
-        this.examples.add(example);
+    public void setAllExamples(List<String> examples) {
+        List<String> originalExamples = examples.stream().map(s -> s.split("[ ]{10}")[0]).collect(Collectors.toList());
+        List<String> translatedExamples = examples.stream().map(s -> {
+            try {
+                s = s.split("[ ]{10}")[1].substring(1);
+                return s.substring(0,s.length()-1);
+            }catch(Exception e) {
+                return "";
+            } }).collect(Collectors.toList());
+
+        this.examples.remove(0, this.examples.size());
+        this.translatedExamples.remove(0, this.translatedExamples.size());
+        this.examples.addAll(originalExamples);
+        this.translatedExamples.addAll(translatedExamples);
     }
-    public void removeExamples(){
-        this.examples.clear();
+
+    public String getTranslationOfExample(String example){
+        for(int i = 0; i < examples.size(); i++){
+            if(examples.get(i).equals(example)){
+                return translatedExamples.get(i);
+            }
+        }
+        return "";
     }
 
     public ObjectProperty<Image> getPronunciationImage(){
@@ -60,9 +81,6 @@ public class PhraseDescription {
     }
     public void setAllTranslatedPhrases(List<String> translatedPhrases){
         this.allTranslatedPhrases = translatedPhrases;
-    }
-    public void removeAllTranslatedPhrases(){
-        this.allTranslatedPhrases = new ArrayList<>();
     }
 
     public List<Image> getAllPhraseImages(){

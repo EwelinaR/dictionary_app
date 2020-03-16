@@ -6,8 +6,8 @@ import app.model.PhraseDescription;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -18,7 +18,7 @@ public class AddingWordController implements Observer {
     @FXML
     private Label translatedPhrase;
     @FXML
-    private ListView phraseExamples;
+    private ListView<String> phraseExamples;
     @FXML
     public ImageView pronunciationImage;
     @FXML
@@ -34,9 +34,18 @@ public class AddingWordController implements Observer {
 
         originalPhrase.textProperty().bind(currentPhrase.getOriginalPhrase());
         translatedPhrase.textProperty().bind(currentPhrase.getTranslatedPhrase());
-        phraseExamples.itemsProperty().bind(currentPhrase.getExamples());
+        phraseExamples.setItems(currentPhrase.getAllExamples());
         Bindings.bindBidirectional(this.pronunciationImage.imageProperty(), currentPhrase.getPronunciationImage());
         Bindings.bindBidirectional(this.phraseImage.imageProperty(), currentPhrase.getPhraseImage());
+    }
+
+    @FXML
+    public void showTranslatedExamplePopup(MouseEvent mouseEvent){
+        Node node = mouseEvent.getPickResult().getIntersectedNode();
+        if (node instanceof Cell) {
+            Cell cell = (Cell) node;
+            cell.setTooltip(new Tooltip(currentPhrase.getTranslationOfExample(cell.getText())));
+        }
     }
 
     @FXML

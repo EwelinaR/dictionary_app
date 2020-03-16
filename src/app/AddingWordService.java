@@ -48,7 +48,7 @@ public class AddingWordService{
             System.out.println(phrase.getAllTranslatedPhrases().toString());
             phrase.setPronunciationImage(parser.getPronunciationImage());
             phrase.setAllPhraseImages(parser.getAllPhraseImages());
-
+            phrase.setAllExamples(parser.getExamples());
             phrase.setDefaults();
         }
     }

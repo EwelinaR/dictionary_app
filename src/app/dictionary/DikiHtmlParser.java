@@ -122,7 +122,13 @@ public class DikiHtmlParser extends HtmlParser {
 
     @Override
     public List<String> getExamples() {
-        return null;
+        if(!isValidHtml) return null;
+        List<String> examples = new ArrayList<>();
+        List<String> exampleBoxes = getTagContent(html, "div", new String[]{"class"}, new String[]{"exampleSentence"});
+        for(String s : exampleBoxes){
+            examples.add(removeTagAndAttributes(s));
+        }
+        return examples;
     }
 
     @Override

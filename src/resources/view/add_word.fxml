@@ -81,7 +81,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Label>
-      <ListView fx:id="phraseExamples" layoutX="14.0" layoutY="83.0" prefHeight="153.0" prefWidth="318.0" />
+      <ListView fx:id="phraseExamples" layoutX="14.0" layoutY="83.0" onMouseMoved="#showTranslatedExamplePopup" prefHeight="153.0" prefWidth="318.0" />
       <StackPane layoutX="380.0" layoutY="83.0" prefHeight="97.0" prefWidth="143.0">
          <children>
             <ImageView fx:id="phraseImage" fitHeight="92.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
