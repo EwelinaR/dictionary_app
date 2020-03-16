@@ -152,4 +152,14 @@ public class DikiHtmlParser extends HtmlParser {
         }
         return images;
     }
+
+    public String getAudioUrl(){
+        try {
+            String url = getTag(html, "span", new String[]{"class"}, new String[]{"audioIcon icon-sound dontprint soundOnClick"}).get(0);
+            url = url.substring(url.indexOf("data-audio-url=") + 16);
+            return "https://www.diki.pl"+url.substring(0, url.indexOf("\""));
+        }catch(Exception e){
+            return "";
+        }
+    }
 }

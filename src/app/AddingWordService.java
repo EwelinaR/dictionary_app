@@ -49,6 +49,7 @@ public class AddingWordService{
             phrase.setPronunciationImage(parser.getPronunciationImage());
             phrase.setAllPhraseImages(parser.getAllPhraseImages());
             phrase.setAllExamples(parser.getExamples());
+            phrase.setAudioUrl(parser.getAudioUrl());
             phrase.setDefaults();
         }
     }

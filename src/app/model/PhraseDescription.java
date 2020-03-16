@@ -19,6 +19,7 @@ public class PhraseDescription {
 
     private List<String> allTranslatedPhrases = new ArrayList<>();
     private List<Image> allPhraseImages = new ArrayList<>();
+    private String audioUrl = "";
 
     public StringProperty getOriginalPhrase() {
         return originalPhrase;
@@ -99,5 +100,12 @@ public class PhraseDescription {
             setPhraseImage(allPhraseImages.get(0));
         else
             setPhraseImage(null);
+    }
+
+    public String getAudioUrl(){
+        return audioUrl;
+    }
+    public void setAudioUrl(String audioUrl){
+        this.audioUrl = audioUrl;
     }
 }

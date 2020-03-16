@@ -6,10 +6,15 @@ import app.model.PhraseDescription;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 
 public class AddingWordController implements Observer {
 
@@ -23,9 +28,12 @@ public class AddingWordController implements Observer {
     public ImageView pronunciationImage;
     @FXML
     public ImageView phraseImage;
+    @FXML
+    public ImageView audioButton;
 
     private AddingWordService service;
     private PhraseDescription currentPhrase;
+    private DropShadow dropShadow;
 
     public void initialize(){
         currentPhrase = new PhraseDescription();
@@ -37,6 +45,10 @@ public class AddingWordController implements Observer {
         phraseExamples.setItems(currentPhrase.getAllExamples());
         Bindings.bindBidirectional(this.pronunciationImage.imageProperty(), currentPhrase.getPronunciationImage());
         Bindings.bindBidirectional(this.phraseImage.imageProperty(), currentPhrase.getPhraseImage());
+
+        dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setColor(Color.BLUE);
     }
 
     @FXML
@@ -64,6 +76,31 @@ public class AddingWordController implements Observer {
         if(phrase != null && service.isValidPhrase(phrase)){
             service.setPhraseDescription(currentPhrase);
             service.showWindow();
+            if(currentPhrase.getAudioUrl().equals("")){
+                audioButton.setDisable(true);
+            }
+            else{
+                audioButton.setDisable(false);
+            }
         }
+    }
+
+    @FXML
+    public void playAudio(MouseEvent mouseEvent) {
+        Media media = new Media(currentPhrase.getAudioUrl());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            audioButton.setDisable(false);
+            audioButton.setEffect(null);
+            audioButton.setCursor(Cursor.HAND);
+        });
+        audioButton.setDisable(true);
+        audioButton.setEffect(dropShadow);
+        audioButton.setCursor(Cursor.DEFAULT);
+        mediaPlayer.play();
+    }
+
+    private void audioFinished(){
+
     }
 }

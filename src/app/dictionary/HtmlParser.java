@@ -21,6 +21,7 @@ public abstract class HtmlParser {
     public abstract Image getPronunciationImage();
     public abstract List<String> getExamples();
     public abstract List<Image> getAllPhraseImages();
+    public abstract String getAudioUrl();
 
 
     protected String getFirstTagContent(String html, String tag){
