@@ -1,7 +1,7 @@
 package app;
 
-import app.dictionary.DikiHtmlParser;
-import app.dictionary.HtmlParser;
+import app.html.DikiHtmlParser;
+import app.html.HtmlParser;
 import app.keyListener.KeyShortcutFinder;
 import app.model.PhraseDescription;
 import app.windows.AddingWordWindow;

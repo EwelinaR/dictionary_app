@@ -1,4 +1,4 @@
-package app.dictionary;
+package app.html;
 
 import javafx.scene.image.Image;
 

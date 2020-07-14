@@ -1,4 +1,4 @@
-package app.dictionary;
+package app.html;
 
 import javafx.scene.image.Image;
 
@@ -126,7 +126,7 @@ public class DikiHtmlParser extends HtmlParser {
         List<String> examples = new ArrayList<>();
         List<String> exampleBoxes = getTagContent(html, "div", new String[]{"class"}, new String[]{"exampleSentence"});
         for(String s : exampleBoxes){
-            examples.add(removeTagAndAttributes(s));
+            examples.add(HTMLEncoder.encode(removeTagAndAttributes(s)));
         }
         return examples;
     }
