@@ -40,9 +40,15 @@ public class DikiHtmlParser extends HtmlParser {
 
     @Override
     public String getOriginalPhrase(){
-        if(isValidHtml)
-            return originalPhrase;
-        return "";
+        if(!isValidHtml) return null;
+        try {
+            String h1 = getTagContent(html, "h1", new String[]{}, new String[]{}).get(0);
+            String originalPhraseBox =  getTagContent(h1, "span", new String[]{}, new String[]{}).get(0);
+            return getFirstTagContent(originalPhraseBox, "a");
+
+        }catch(IndexOutOfBoundsException | IllegalArgumentException e){
+            return null;
+        }
     }
 
     private void setOriginalPhrase(){

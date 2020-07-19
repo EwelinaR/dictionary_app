@@ -26,7 +26,7 @@ public abstract class HtmlParser {
 
     protected String getFirstTagContent(String html, String tag){
         if(!html.contains("<" + tag))
-            return null;
+            return html;
 
         String container = html;
         StringBuilder result = new StringBuilder();
