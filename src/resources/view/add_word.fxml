@@ -71,13 +71,6 @@
             </VBox>
          </children>
       </HBox>
-      <Label layoutX="582.0" layoutY="8.0" onMouseClicked="#closePopUp" text="X">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font></Label>
       <Label layoutX="542.0" layoutY="210.0" onMouseClicked="#addWord" text="DODAJ">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -93,6 +86,14 @@
       <ImageView fx:id="audioButton" fitHeight="17.0" fitWidth="23.0" layoutX="19.0" layoutY="12.0" onMouseClicked="#playAudio" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/loud.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="25.0" fitWidth="30.0" layoutX="564.0" layoutY="6.0" onMouseClicked="#closePopUp" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/exit.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
