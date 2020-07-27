@@ -30,6 +30,10 @@ public class AddingWordController implements Observer {
     public ImageView phraseImage;
     @FXML
     public ImageView audioButton;
+    @FXML
+    public ImageView imageLeftArrow;
+    @FXML
+    public ImageView imageRightArrow;
 
     private AddingWordService service;
     private PhraseDescription currentPhrase;
@@ -65,10 +69,6 @@ public class AddingWordController implements Observer {
         service.closeWindow();
     }
 
-    @FXML
-    public void addWord(MouseEvent mouseEvent) {
-        service.closeWindow();
-    }
 
     @Override
     public void update() {
@@ -100,7 +100,13 @@ public class AddingWordController implements Observer {
         mediaPlayer.play();
     }
 
-    private void audioFinished(){
+    @FXML
+    public void prevImage(MouseEvent mouseEvent) {
+
+    }
+
+    @FXML
+    public void nextImage(MouseEvent mouseEvent) {
 
     }
 }

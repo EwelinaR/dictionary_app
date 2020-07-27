@@ -3,6 +3,9 @@ package app.windows;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -43,7 +46,11 @@ public class AddingWordWindow implements NewWindowHandler {
         utilityParentStage.show();
         addingWordStage = new Stage();
         addingWordStage.initOwner(utilityParentStage);
-        scene.setFill(Color.TRANSPARENT);
+
+        Stop[] stops = new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.TRANSPARENT)};
+        LinearGradient linear = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
+        scene.setFill(linear);
+
         addingWordStage.initStyle(StageStyle.TRANSPARENT);
         String css = this.getClass().getResource("/resources/css/stylesheet.css").toExternalForm();
         scene.getStylesheets().add(css);
