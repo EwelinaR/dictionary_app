@@ -12,14 +12,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class KeyShortcutFinder implements NativeKeyListener, Observer {
-    private int[] shortcut = new int[]{NativeKeyEvent.VC_CONTROL, NativeKeyEvent.VC_SHIFT};
+    private int[] shortcut = new int[]{NativeKeyEvent.VC_CONTROL, NativeKeyEvent.VC_SPACE};
     private List<Integer> pressedKeys = new LinkedList<>();
     private int lastPressed = -1;
     private Observer notification;
+    private ResetShortcutTimeManager resetShortcutTimeManager;
 
     public KeyShortcutFinder(Observer notification){
         initGlobalKeyListener();
         this.notification = notification;
+        resetShortcutTimeManager = new ResetShortcutTimeManager(this);
     }
 
     private void initGlobalKeyListener(){
@@ -56,6 +58,7 @@ public class KeyShortcutFinder implements NativeKeyListener, Observer {
             if(pressedKeys.size() == shortcut.length){
                 checkShortcut();
             }
+            resetShortcutTimeManager.startTimer();
         }
     }
 
