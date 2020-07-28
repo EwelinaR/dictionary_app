@@ -73,7 +73,10 @@ public class AddingWordController implements Observer {
     @Override
     public void update() {
         String phrase = service.getTextFromClipboard();
-        if(phrase != null && service.isValidPhrase(phrase)){
+        if(service.isOpenWindow()){
+            service.closeWindow();
+        }
+        else if(phrase != null && service.isValidPhrase(phrase)){
             service.setPhraseDescription(currentPhrase);
             service.showWindow();
             if(currentPhrase.getAudioUrl().equals("")){

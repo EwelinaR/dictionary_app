@@ -13,29 +13,52 @@ import javafx.stage.StageStyle;
 
 public class AddingWordWindow implements NewWindowHandler {
 
+    private int hideWindowPointY = -250;
     private Stage addingWordStage;
 
     @Override
     public void show(){
-        AnimationTimer timer = new PopUpAnimation();
+        AnimationTimer timer = new PopUpAnimation(true);
         timer.start();
-        addingWordStage.show();
     }
 
     @Override
     public void close() {
-        addingWordStage.hide();
+        AnimationTimer timer = new PopUpAnimation(false);
+        timer.start();
     }
 
     private class PopUpAnimation extends AnimationTimer {
-        private int windowsSize = 250;
+        private int windowPointY;
+        private boolean open;
+
+        PopUpAnimation(boolean open){
+            super();
+            this.open = open;
+            if(open) windowPointY = hideWindowPointY;
+            else windowPointY = 0;
+        }
+
         @Override
         public void handle(long now) {
-            addingWordStage.setY(-windowsSize);
-            if (windowsSize <= 0) {
+            if(open) open();
+            else close();
+        }
+
+        private void open(){
+            addingWordStage.setY(windowPointY);
+            if (windowPointY >= 0) {
                 stop();
             }
-            windowsSize -= 10;
+            windowPointY += 10;
+        }
+
+        private void close(){
+            addingWordStage.setY(windowPointY);
+            if (windowPointY <= hideWindowPointY) {
+                stop();
+            }
+            windowPointY -= 10;
         }
     }
 
@@ -54,10 +77,12 @@ public class AddingWordWindow implements NewWindowHandler {
         addingWordStage.initStyle(StageStyle.TRANSPARENT);
         String css = this.getClass().getResource("/resources/css/stylesheet.css").toExternalForm();
         scene.getStylesheets().add(css);
-        addingWordStage.setY(0);
+        addingWordStage.setY(hideWindowPointY);
         addingWordStage.setX((Screen.getPrimary().getVisualBounds().getWidth() - scene.getWidth()) / 2);
         addingWordStage.setTitle("New word");
         addingWordStage.setAlwaysOnTop(true);
         addingWordStage.setScene(scene);
+
+        addingWordStage.show();
     }
 }

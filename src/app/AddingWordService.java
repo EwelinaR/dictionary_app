@@ -17,21 +17,29 @@ public class AddingWordService{
     private final Clipboard clipboard;
     private NewWindowHandler windowHandler;
     private HtmlParser parser;
+    private boolean isOpen;
 
     public AddingWordService(){
         clipboard = Clipboard.getSystemClipboard();
+        isOpen = false;
     }
     public void init(Scene scene, Observer observer){
         keyShortcutFinder = new KeyShortcutFinder(observer);
         this.windowHandler = new AddingWordWindow(scene);
     }
 
+    public boolean isOpenWindow(){
+        return isOpen;
+    }
+
     public void closeWindow(){
         windowHandler.close();
+        isOpen = false;
     }
 
     public void showWindow(){
         windowHandler.show();
+        isOpen = true;
     }
 
     public String getTextFromClipboard(){

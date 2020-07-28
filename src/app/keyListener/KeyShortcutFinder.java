@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class KeyShortcutFinder implements NativeKeyListener {
+public class KeyShortcutFinder implements NativeKeyListener, Observer {
     private int[] shortcut = new int[]{NativeKeyEvent.VC_CONTROL, NativeKeyEvent.VC_SHIFT};
     private List<Integer> pressedKeys = new LinkedList<>();
     private int lastPressed = -1;
@@ -68,4 +68,10 @@ public class KeyShortcutFinder implements NativeKeyListener {
 
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) { /* unimplemented */ }
+
+    @Override
+    public void update() {
+        pressedKeys.clear();
+        lastPressed = -1;
+    }
 }
