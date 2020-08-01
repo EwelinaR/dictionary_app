@@ -1,6 +1,7 @@
 package app.view;
 
 public interface View {
-    void show();
-    void hide();
+    void open();
+    void close();
+    void reopen();
 }

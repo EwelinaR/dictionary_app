@@ -15,7 +15,7 @@ public abstract class HtmlParser {
     public HtmlParser(String originalPhrase){
         this.originalPhrase = originalPhrase;
     }
-    public abstract void setPageContent(BufferedReader br);
+    public abstract void setPage(BufferedReader br);
     public abstract String getOriginalPhrase();
     public abstract List<String> getTranslatedPhrases();
     public abstract Image getPronunciationImage();

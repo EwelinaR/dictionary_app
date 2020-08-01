@@ -1,83 +1,66 @@
 package app;
 
-import app.html.DikiHtmlParser;
-import app.html.HtmlParser;
-import app.keyListener.KeyShortcutFinder;
+import app.html.HtmlManager;
 import app.model.PhraseDescription;
-import app.util.Observer;
 import app.view.NewWordView;
 import app.view.View;
 import javafx.scene.Scene;
 import javafx.scene.input.Clipboard;
 
-import java.io.*;
-import java.net.URL;
-
 public class NewWordService {
-    private KeyShortcutFinder keyShortcutFinder;
     private final Clipboard clipboard;
     private View windowHandler;
-    private HtmlParser parser;
-    private boolean isOpen;
+    private HtmlManager htmlManager;
+    private boolean isWindowOpen;
+    private PhraseDescription currentPhrase;
 
-    public NewWordService(){
-        clipboard = Clipboard.getSystemClipboard();
-        isOpen = false;
-    }
-    public void init(Scene scene, Observer observer){
-        keyShortcutFinder = new KeyShortcutFinder(observer);
+
+    public NewWordService(Scene scene, PhraseDescription currentPhrase){
         this.windowHandler = new NewWordView(scene);
-    }
-
-    public boolean isOpenWindow(){
-        return isOpen;
+        this.currentPhrase = currentPhrase;
+        clipboard = Clipboard.getSystemClipboard();
+        isWindowOpen = false;
+        htmlManager = new HtmlManager();
     }
 
     public void closeWindow(){
-        windowHandler.hide();
-        isOpen = false;
+        windowHandler.close();
+        isWindowOpen = false;
     }
 
-    public void showWindow(){
-        windowHandler.show();
-        isOpen = true;
+    private void openWindow(){
+        windowHandler.open();
+        isWindowOpen = true;
     }
 
-    public String getTextFromClipboard(){
+    private void reopenWindow(){
+        windowHandler.reopen();
+        isWindowOpen = true;
+    }
+
+    private String getTextFromClipboard(){
         if(clipboard.hasString())
             return clipboard.getString();
         return null;
     }
 
-    public void setPhraseDescription(PhraseDescription phrase){
-        if(parser.isValidHtml()){
-            phrase.setOriginalPhrase(parser.getOriginalPhrase());
-            phrase.setAllTranslatedPhrases(parser.getTranslatedPhrases());
-            System.out.println(phrase.getOriginalPhrase().toString());
-            System.out.println(phrase.getAllTranslatedPhrases().toString());
-            phrase.setPronunciationImage(parser.getPronunciationImage());
-            phrase.setAllPhraseImages(parser.getAllPhraseImages());
-            phrase.setAllExamples(parser.getExamples());
-            phrase.setAudioUrl(parser.getAudioUrl());
-            phrase.setDefaults();
+    public void translatePhraseFromClipboard(){
+        htmlManager.setPhrase(getTextFromClipboard());
+        if (htmlManager.isValidPhrase()){
+            if (currentPhrase.getOriginalPhrase().isEmpty().getValue()
+                    || !currentPhrase.getOriginalPhrase().getValue().equals(htmlManager.getOriginalPhrase())) {
+                // if phrase changed
+                htmlManager.updatePhrase(currentPhrase);
+                reopenWindow();
+            }
+            else if (isWindowOpen) {
+                closeWindow();
+            } else {
+                openWindow();
+            }
+        } else if (isWindowOpen) {
+            closeWindow();
         }
-    }
-
-    public boolean isValidPhrase(String phrase){
-        parser = new DikiHtmlParser(phrase);
-        try {
-            URL url = new URL("https://www.diki.pl/"+phrase);
-            InputStream is = url.openStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-            parser.setPageContent(br);
-
-            is.close();
-            br.close();
-        }
-        catch (IOException ie) {
-            return false;
-        }
-        return parser.isValidHtml();
+        // TODO toast - incorrect phrase in clipboard
     }
 }

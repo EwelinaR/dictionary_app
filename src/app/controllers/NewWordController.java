@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.NewWordService;
+import app.keyListener.KeyShortcutFinder;
 import app.util.Observer;
 import app.model.PhraseDescription;
 import javafx.application.Platform;
@@ -40,9 +41,9 @@ public class NewWordController implements Observer {
     private DropShadow dropShadow;
 
     public void initialize(){
+        new KeyShortcutFinder(this);
         currentPhrase = new PhraseDescription();
-        service = new NewWordService();
-        Platform.runLater( () -> service.init(originalPhrase.getScene(), this) );
+        Platform.runLater( () -> service = new NewWordService(originalPhrase.getScene(), currentPhrase) );
 
         originalPhrase.textProperty().bind(currentPhrase.getOriginalPhrase());
         translatedPhrase.textProperty().bind(currentPhrase.getTranslatedPhrase());
@@ -69,22 +70,13 @@ public class NewWordController implements Observer {
         service.closeWindow();
     }
 
-
     @Override
     public void update() {
-        String phrase = service.getTextFromClipboard();
-        if(service.isOpenWindow()){
-            service.closeWindow();
-        }
-        else if(phrase != null && service.isValidPhrase(phrase)){
-            service.setPhraseDescription(currentPhrase);
-            service.showWindow();
-            if(currentPhrase.getAudioUrl().equals("")){
-                audioButton.setDisable(true);
-            }
-            else{
-                audioButton.setDisable(false);
-            }
+        service.translatePhraseFromClipboard();
+        if(currentPhrase.getAudioUrl().isEmpty()){
+            audioButton.setDisable(true);
+        } else{
+            audioButton.setDisable(false);
         }
     }
 

@@ -64,11 +64,12 @@ public class DikiHtmlParser extends HtmlParser {
     }
 
     @Override
-    public void setPageContent(BufferedReader br) {
+    public void setPage(BufferedReader br) {
         html = getPartOfPage(getPage(br));
-        if(!html.isEmpty()){
+        if(!html.isEmpty()) {
             isValidHtml = true;
             setOriginalPhrase();
+            // TODO start parallel parsing for improving performance ?
         }
     }
 
@@ -132,7 +133,7 @@ public class DikiHtmlParser extends HtmlParser {
         List<String> examples = new ArrayList<>();
         List<String> exampleBoxes = getTagContent(html, "div", new String[]{"class"}, new String[]{"exampleSentence"});
         for(String s : exampleBoxes){
-            examples.add(HTMLEncoder.encode(removeTagAndAttributes(s)));
+            examples.add(HtmlEncoder.encode(removeTagAndAttributes(s)));
         }
         return examples;
     }

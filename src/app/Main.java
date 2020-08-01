@@ -20,7 +20,15 @@ public class Main extends Application {
 
     private Stage primaryStage;
 
-    private void initAddingWordWindow() throws IOException {
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        this.primaryStage = primaryStage;
+        initNewWordWindow();
+        initMainWindow();
+        initTrayIcon();
+    }
+
+    private void initNewWordWindow() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("../resources/view/add_word.fxml"));
         new Scene(fxmlLoader.load(), 600, 250);
@@ -38,7 +46,40 @@ public class Main extends Application {
         SwingUtilities.invokeLater(this::addAppToTray);
     }
 
-    private TrayIcon configTrayIcon(){
+    private void addAppToTray() {
+        try {
+            Toolkit.getDefaultToolkit();
+
+            if (!SystemTray.isSupported()) {
+                System.out.println("System does not support using a tray.");
+                Platform.exit();
+            }
+
+            SystemTray tray = SystemTray.getSystemTray();
+            TrayIcon trayIcon = createTrayIcon();
+            trayIcon.addActionListener(event -> Platform.runLater(this::showStage));
+
+            final PopupMenu popup = new PopupMenu();
+            popup.add(getOpenAppMenuItem());
+            popup.addSeparator();
+            popup.add(getExitMenuItem(tray, trayIcon));
+            trayIcon.setPopupMenu(popup);
+
+            SwingUtilities.invokeLater(() ->
+                    trayIcon.displayMessage(
+                            "Dictionary app started!",
+                            "Successfully run dictionary application\nNow you can translate words!",
+                            TrayIcon.MessageType.INFO
+                    )
+            );
+            tray.add(trayIcon);
+        } catch (AWTException e) {
+            System.err.println("Unable to init system tray.");
+            e.printStackTrace();
+        }
+    }
+
+    private TrayIcon createTrayIcon(){
         String letter = "D";
         Dimension trayIconSize = new TrayIcon(new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR)).getSize();
         try {
@@ -60,8 +101,8 @@ public class Main extends Application {
         }
     }
 
-    private MenuItem getOpenAppItem(){
-        MenuItem openItem = new MenuItem("show application");
+    private MenuItem getOpenAppMenuItem(){
+        MenuItem openItem = new MenuItem("open application");
         openItem.addActionListener(event -> Platform.runLater(this::showStage));
 
         Font defaultFont = Font.decode(null);
@@ -70,7 +111,7 @@ public class Main extends Application {
         return openItem;
     }
 
-    private MenuItem getExitItem(SystemTray tray, TrayIcon trayIcon){
+    private MenuItem getExitMenuItem(SystemTray tray, TrayIcon trayIcon){
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.addActionListener(event -> {
             Platform.exit();
@@ -80,51 +121,11 @@ public class Main extends Application {
         return exitItem;
     }
 
-    private void addAppToTray() {
-        try {
-            Toolkit.getDefaultToolkit();
-
-            if (!SystemTray.isSupported()) {
-                System.out.println("No system tray support, application exiting.");
-                Platform.exit();
-            }
-            SystemTray tray = SystemTray.getSystemTray();
-            TrayIcon trayIcon = configTrayIcon();
-            trayIcon.addActionListener(event -> Platform.runLater(this::showStage));
-
-            final PopupMenu popup = new PopupMenu();
-            popup.add(getOpenAppItem());
-            popup.addSeparator();
-            popup.add(getExitItem(tray, trayIcon));
-            trayIcon.setPopupMenu(popup);
-
-            SwingUtilities.invokeLater(() ->
-                    trayIcon.displayMessage(
-                            "Dictionary app started!",
-                            "Successfully run dictionary application\nNow you can translate words!",
-                            TrayIcon.MessageType.INFO
-                    )
-            );
-            tray.add(trayIcon);
-        } catch (AWTException e) {
-            System.err.println("Unable to init system tray");
-            e.printStackTrace();
-        }
-    }
-
     private void showStage() {
         if (primaryStage != null) {
             primaryStage.show();
             primaryStage.toFront();
         }
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        this.primaryStage = primaryStage;
-        initAddingWordWindow();
-        initMainWindow();
-        initTrayIcon();
     }
 
     public static void main(String[] args) {

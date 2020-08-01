@@ -26,7 +26,7 @@ public class NewWordView implements View {
     }
 
     /**
-     * This stage is always invisible but it allows to not show icon in the taskbar.
+     * This stage is always invisible but it allows to not open icon in the taskbar.
      * It is used as parent stage of main stage.
      *
      * @return Stage
@@ -61,29 +61,63 @@ public class NewWordView implements View {
     }
 
     @Override
-    public void show(){
+    public void open(){
         windowAnimation.setIsOpen(true);
-        windowAnimation.start();
     }
 
     @Override
-    public void hide() {
+    public void close() {
         windowAnimation.setIsOpen(false);
-        windowAnimation.start();
     }
+
+    @Override
+    public void reopen() {
+        windowAnimation.reopen();
+    }
+
 
     private class WindowAnimation extends AnimationTimer {
 
         private int windowPointY;
         private boolean open;
+        private boolean reopen;
 
         WindowAnimation(){
             super();
+            reopen = false;
         }
 
         void setIsOpen(boolean open) {
-            this.open = open;
             windowPointY = (int) newWordStage.getY();
+            this.open = open;
+             if(windowPointY == 0 || windowPointY == hideWindowPointY) {
+                 start();
+             }
+        }
+
+        private void reopen() {
+            windowPointY = (int) newWordStage.getY();
+            if (windowPointY == hideWindowPointY) {
+                // if window is close
+                // open window
+                open = true;
+                start();
+            } else if (windowPointY == 0) {
+                // if window is open
+                // quick close and open window
+                open = false;
+                reopen = true;
+                start();
+            } else if (!open){
+                // if window is closing
+                // quick close and open window
+                reopen = true;
+            } else {
+                // if window is opening
+                // immediately start closing and then open window
+                open = false;
+                reopen = true;
+            }
         }
 
         @Override
@@ -92,20 +126,31 @@ public class NewWordView implements View {
             else close();
         }
 
-        private void open(){
+        private void open() {
             newWordStage.setY(windowPointY);
             if (windowPointY >= 0) {
                 stop();
             }
-            windowPointY += 10;
+            windowPointY += 10 + 5*(reopen ? 1 : 0);
+            if (windowPointY >= 0) {
+                windowPointY = 0;
+            }
         }
 
-        private void close(){
+        private void close() {
             newWordStage.setY(windowPointY);
             if (windowPointY <= hideWindowPointY) {
-                stop();
+                if (reopen) {
+                    open = true;
+                    reopen = false;
+                } else {
+                    stop();
+                }
             }
-            windowPointY -= 10;
+            windowPointY -= 10 + 5*(reopen ? 1 : 0);
+            if (windowPointY <= hideWindowPointY) {
+                windowPointY = hideWindowPointY;
+            }
         }
     }
 }

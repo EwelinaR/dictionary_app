@@ -1,6 +1,6 @@
 package app.html;
 
-public class HTMLEncoder {
+public class HtmlEncoder {
 
     private static final String[][] ENCRYPTION_TABLE = {
             {"&nbsp;", " "},

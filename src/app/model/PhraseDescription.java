@@ -24,6 +24,7 @@ public class PhraseDescription {
     public StringProperty getOriginalPhrase() {
         return originalPhrase;
     }
+
     public void setOriginalPhrase(String originalPhrase) {
         this.originalPhrase.set(originalPhrase);
     }
@@ -31,6 +32,7 @@ public class PhraseDescription {
     public StringProperty getTranslatedPhrase() {
         return translatedPhrase;
     }
+
     public void setTranslatedPhrase(String translatedPhrase) {
         this.translatedPhrase.set(translatedPhrase);
     }
@@ -38,6 +40,7 @@ public class PhraseDescription {
     public ObservableList<String> getAllExamples() {
         return examples;
     }
+
     public void setAllExamples(List<String> examples) {
         List<String> originalExamples = examples.stream().map(s -> s.split("[ ]{10}")[0]).collect(Collectors.toList());
         List<String> translatedExamples = examples.stream().map(s -> {
@@ -66,6 +69,7 @@ public class PhraseDescription {
     public ObjectProperty<Image> getPronunciationImage(){
         return pronunciationImage;
     }
+
     public void setPronunciationImage(Image image){
         pronunciationImage.set(image);
     }
@@ -73,6 +77,7 @@ public class PhraseDescription {
     public ObjectProperty<Image> getPhraseImage() {
         return phraseImage;
     }
+
     public void setPhraseImage(Image phraseImage) {
         this.phraseImage.set(phraseImage);
     }
@@ -80,6 +85,7 @@ public class PhraseDescription {
     public List<String> getAllTranslatedPhrases(){
         return allTranslatedPhrases;
     }
+
     public void setAllTranslatedPhrases(List<String> translatedPhrases){
         this.allTranslatedPhrases = translatedPhrases;
     }
@@ -91,7 +97,7 @@ public class PhraseDescription {
         this.allPhraseImages = images;
     }
 
-    public void setDefaults() {
+    public void updateDefaultValues() {
         if(allTranslatedPhrases != null && allTranslatedPhrases.size() > 0)
             setTranslatedPhrase(allTranslatedPhrases.get(0));
         else
@@ -105,6 +111,7 @@ public class PhraseDescription {
     public String getAudioUrl(){
         return audioUrl;
     }
+
     public void setAudioUrl(String audioUrl){
         this.audioUrl = audioUrl;
     }
