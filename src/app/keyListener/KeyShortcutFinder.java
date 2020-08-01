@@ -1,6 +1,6 @@
 package app.keyListener;
 
-import app.Observer;
+import app.util.Observer;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;

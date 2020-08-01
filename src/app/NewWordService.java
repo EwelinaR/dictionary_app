@@ -4,28 +4,29 @@ import app.html.DikiHtmlParser;
 import app.html.HtmlParser;
 import app.keyListener.KeyShortcutFinder;
 import app.model.PhraseDescription;
-import app.windows.AddingWordWindow;
-import app.windows.NewWindowHandler;
+import app.util.Observer;
+import app.view.NewWordView;
+import app.view.View;
 import javafx.scene.Scene;
 import javafx.scene.input.Clipboard;
 
 import java.io.*;
 import java.net.URL;
 
-public class AddingWordService{
+public class NewWordService {
     private KeyShortcutFinder keyShortcutFinder;
     private final Clipboard clipboard;
-    private NewWindowHandler windowHandler;
+    private View windowHandler;
     private HtmlParser parser;
     private boolean isOpen;
 
-    public AddingWordService(){
+    public NewWordService(){
         clipboard = Clipboard.getSystemClipboard();
         isOpen = false;
     }
     public void init(Scene scene, Observer observer){
         keyShortcutFinder = new KeyShortcutFinder(observer);
-        this.windowHandler = new AddingWordWindow(scene);
+        this.windowHandler = new NewWordView(scene);
     }
 
     public boolean isOpenWindow(){
@@ -33,7 +34,7 @@ public class AddingWordService{
     }
 
     public void closeWindow(){
-        windowHandler.close();
+        windowHandler.hide();
         isOpen = false;
     }
 

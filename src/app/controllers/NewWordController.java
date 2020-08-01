@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.AddingWordService;
-import app.Observer;
+import app.NewWordService;
+import app.util.Observer;
 import app.model.PhraseDescription;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -16,7 +16,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 
-public class AddingWordController implements Observer {
+public class NewWordController implements Observer {
 
     @FXML
     private Label originalPhrase;
@@ -35,13 +35,13 @@ public class AddingWordController implements Observer {
     @FXML
     public ImageView imageRightArrow;
 
-    private AddingWordService service;
+    private NewWordService service;
     private PhraseDescription currentPhrase;
     private DropShadow dropShadow;
 
     public void initialize(){
         currentPhrase = new PhraseDescription();
-        service = new AddingWordService();
+        service = new NewWordService();
         Platform.runLater( () -> service.init(originalPhrase.getScene(), this) );
 
         originalPhrase.textProperty().bind(currentPhrase.getOriginalPhrase());

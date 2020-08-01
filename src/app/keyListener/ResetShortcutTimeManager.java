@@ -1,6 +1,6 @@
 package app.keyListener;
 
-import app.Observer;
+import app.util.Observer;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,7 +27,6 @@ class ResetShortcutTimeManager {
             timer.schedule(new ResetKeysTimerTask(), 4000);
         }
     }
-
 
     private class ResetKeysTimerTask extends TimerTask {
 

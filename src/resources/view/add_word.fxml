@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="250.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.AddingWordController">
+<AnchorPane prefHeight="250.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.NewWordController">
    <children>
       <ListView fx:id="phraseExamples" layoutX="14.0" layoutY="83.0" onMouseMoved="#showTranslatedExamplePopup" prefHeight="153.0" prefWidth="383.0" />
       <StackPane layoutX="427.0" layoutY="54.0" prefHeight="97.0" prefWidth="143.0" />
@@ -33,20 +33,24 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Pane fx:id="imagePane" layoutX="427.0" layoutY="83.0" prefHeight="117.0" prefWidth="143.0">
+      <Pane fx:id="imagePane" layoutX="427.0" layoutY="83.0" prefHeight="117.0" prefWidth="140.0">
          <children>
-            <ImageView fx:id="phraseImage" fitHeight="92.0" fitWidth="140.0" layoutX="2.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="imageLeftArrow" fitHeight="20.0" fitWidth="22.0" layoutX="42.0" layoutY="91.0" onMouseClicked="#prevImage" pickOnBounds="true" preserveRatio="true">
+            <StackPane prefWidth="140.0">
+               <children>
+                  <ImageView fx:id="phraseImage" fitHeight="90.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </StackPane>
+            <ImageView fx:id="imageRightArrow" fitHeight="20.0" fitWidth="22.0" layoutX="80.0" layoutY="91.0" onMouseClicked="#nextImage" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../img/arrow_left.png" />
+                  <Image url="@../img/arrow_right2.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fx:id="imageRightArrow" fitHeight="20.0" fitWidth="22.0" layoutX="82.0" layoutY="91.0" onMouseClicked="#nextImage" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imageLeftArrow" fitHeight="20.0" fitWidth="22.0" layoutX="38.0" layoutY="91.0" onMouseClicked="#prevImage" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../img/arrow_right.png" />
+                  <Image url="@../img/arrow_left.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
