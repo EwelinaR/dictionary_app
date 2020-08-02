@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class HtmlParser {
-    protected String html;
-    protected boolean isValidHtml = false;
-    protected String originalPhrase;
+    String html;
+    boolean isValidHtml = false;
+    String originalPhrase;
 
-    public HtmlParser(String originalPhrase){
+    HtmlParser(String originalPhrase){
         this.originalPhrase = originalPhrase;
     }
     public abstract void setPage(BufferedReader br);
@@ -25,7 +25,7 @@ public abstract class HtmlParser {
     public abstract String getAudioUrl();
 
 
-    protected String getFirstTagContent(String html, String tag){
+    String getFirstTagContent(String html, String tag){
         if(!html.contains("<" + tag))
             return html;
 
@@ -57,7 +57,7 @@ public abstract class HtmlParser {
         return isValidHtml;
     }
 
-    protected String removeTagAndAttributes(String text){
+    String removeTagAndAttributes(String text){
         String tmp;
         while(text.contains("<")){
             tmp = text.substring(0, text.indexOf("<"));
@@ -84,7 +84,7 @@ public abstract class HtmlParser {
     }
 
 
-    protected List<String> getTag(String html, String tag, String[] attributes, String[] values){
+    List<String> getTag(String html, String tag, String[] attributes, String[] values){
         String[] attributesList = getFormattedAttributedList(attributes, values);
         String container = html, result;
         int nextTagIndex = getFirstMatchTagIndex(container, tag, attributesList);
@@ -117,7 +117,7 @@ public abstract class HtmlParser {
         return -1;
     }
 
-    protected List<String> getTagContent(String html, String tag, String[] attributes, String[] values){
+    List<String> getTagContent(String html, String tag, String[] attributes, String[] values){
         if(attributes.length != values.length)
             return new ArrayList<>();
 

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class DikiHtmlParser extends HtmlParser {
 
-    public DikiHtmlParser(String originalPhrase) {
+    DikiHtmlParser(String originalPhrase) {
         super(originalPhrase);
     }
 
@@ -59,15 +59,15 @@ public class DikiHtmlParser extends HtmlParser {
             if (phrases.size() > 0)
                 originalPhrase = phrases.get(0);
         }
+        isValidHtml = false;
     }
 
     @Override
     public void setPage(BufferedReader br) {
         html = getPartOfPage(getPage(br));
-        if(!html.isEmpty()) {
+        if (!html.isEmpty()) {   // TODO add more conditions
             isValidHtml = true;
             setOriginalPhrase();
-            // TODO start parallel parsing for improving performance ?
         }
     }
 

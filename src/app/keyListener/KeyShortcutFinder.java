@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class KeyShortcutFinder implements NativeKeyListener, Observer {
     private int[] shortcut = new int[]{NativeKeyEvent.VC_CONTROL, NativeKeyEvent.VC_SPACE};
     private List<Integer> pressedKeys = new LinkedList<>();
-    private int lastPressed = -1;
+    private int lastPressedKey = -1;
     private Observer notification;
     private ResetShortcutTimeManager resetShortcutTimeManager;
 
@@ -32,8 +32,7 @@ public class KeyShortcutFinder implements NativeKeyListener, Observer {
         GlobalScreen.setEventDispatcher(new JavaFxDispatchService());
         try {
             GlobalScreen.registerNativeHook();
-        }
-        catch (NativeHookException ex) {
+        } catch (NativeHookException ex) {
             System.exit(1);
         }
         GlobalScreen.addNativeKeyListener(this);
@@ -52,9 +51,9 @@ public class KeyShortcutFinder implements NativeKeyListener, Observer {
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
         int key = nativeKeyEvent.getKeyCode();
-        if(pressedKeys.isEmpty() || lastPressed != key){
+        if(lastPressedKey != key){
             pressedKeys.add(key);
-            lastPressed = key;
+            lastPressedKey = key;
             if(pressedKeys.size() == shortcut.length){
                 checkShortcut();
             }
@@ -66,15 +65,18 @@ public class KeyShortcutFinder implements NativeKeyListener, Observer {
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
         int key = nativeKeyEvent.getKeyCode();
         pressedKeys.remove((Integer)key);
-        lastPressed = -1;
+        lastPressedKey = -1;
     }
 
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) { /* unimplemented */ }
 
+    /**
+     * reset saved pressed keys after 4 seconds
+     */
     @Override
     public void update() {
         pressedKeys.clear();
-        lastPressed = -1;
+        lastPressedKey = -1;
     }
 }
