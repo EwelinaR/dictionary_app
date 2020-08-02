@@ -4,9 +4,7 @@ import javafx.scene.image.Image;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DikiHtmlParser extends HtmlParser {
@@ -128,12 +126,23 @@ public class DikiHtmlParser extends HtmlParser {
     }
 
     @Override
-    public List<String> getExamples() {
-        if(!isValidHtml) return null;
-        List<String> examples = new ArrayList<>();
+    public Map<String, String> getExamples() {
+        if(!isValidHtml)
+            return null;
+        Map<String, String> examples = new HashMap<>();
         List<String> exampleBoxes = getTagContent(html, "div", new String[]{"class"}, new String[]{"exampleSentence"});
+        String example;
+        String originalExample, translatedExample;
         for(String s : exampleBoxes){
-            examples.add(HtmlEncoder.encode(removeTagAndAttributes(s)));
+            example = HtmlEncoder.encode(removeTagAndAttributes(s));
+            originalExample = example.split("[ ]{10}")[0];
+            try {
+                translatedExample = example.split("[ ]{10}")[1].substring(1);
+                translatedExample = translatedExample.substring(0, translatedExample.length() - 1);
+            } catch(StringIndexOutOfBoundsException e) {
+                translatedExample = "";
+            }
+            examples.put(originalExample, translatedExample);
         }
         return examples;
     }

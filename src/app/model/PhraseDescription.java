@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PhraseDescription {
@@ -41,20 +42,14 @@ public class PhraseDescription {
         return examples;
     }
 
-    public void setAllExamples(List<String> examples) {
-        List<String> originalExamples = examples.stream().map(s -> s.split("[ ]{10}")[0]).collect(Collectors.toList());
-        List<String> translatedExamples = examples.stream().map(s -> {
-            try {
-                s = s.split("[ ]{10}")[1].substring(1);
-                return s.substring(0,s.length()-1);
-            }catch(Exception e) {
-                return "";
-            } }).collect(Collectors.toList());
-
+    public void setAllExamples(Map<String, String> examples) {
         this.examples.remove(0, this.examples.size());
         this.translatedExamples.remove(0, this.translatedExamples.size());
-        this.examples.addAll(originalExamples);
-        this.translatedExamples.addAll(translatedExamples);
+
+        for (Map.Entry<String, String> entry : examples.entrySet()) {
+            this.examples.add(entry.getKey());
+            this.translatedExamples.add(entry.getValue());
+        }
     }
 
     public String getTranslationOfExample(String example){

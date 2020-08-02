@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class HtmlParser {
     protected String html;
@@ -19,7 +20,7 @@ public abstract class HtmlParser {
     public abstract String getOriginalPhrase();
     public abstract List<String> getTranslatedPhrases();
     public abstract Image getPronunciationImage();
-    public abstract List<String> getExamples();
+    public abstract Map<String, String> getExamples();
     public abstract List<Image> getAllPhraseImages();
     public abstract String getAudioUrl();
 

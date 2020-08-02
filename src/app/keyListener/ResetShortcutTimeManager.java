@@ -9,19 +9,19 @@ class ResetShortcutTimeManager {
 
     private Observer observer;
     private Timer timer;
-    private boolean toDelay;
+    private boolean delay;
     private boolean isSetTimer;
 
     ResetShortcutTimeManager(Observer observer){
         this.observer = observer;
         timer = new Timer();
-        toDelay = false;
+        delay = false;
         isSetTimer = false;
     }
 
     void startTimer(){
         if(isSetTimer){
-            toDelay = true;
+            delay = true;
         } else{
             isSetTimer = true;
             timer.schedule(new ResetKeysTimerTask(), 4000);
@@ -32,8 +32,8 @@ class ResetShortcutTimeManager {
 
         @Override
         public void run() {
-            if(toDelay){
-                toDelay = false;
+            if(delay){
+                delay = false;
                 isSetTimer = false;
                 startTimer();
             } else {
