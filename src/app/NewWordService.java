@@ -39,13 +39,20 @@ public class NewWordService {
     }
 
     private String getTextFromClipboard(){
-        if(clipboard.hasString())
-            return clipboard.getString();
+        if(clipboard.hasString()) {
+            String text = clipboard.getString();
+            text = text.trim();
+            if(text.isEmpty())
+                return null;
+            return text.replace("\n", " ");
+        }
         return null;
     }
 
     public void translatePhraseFromClipboard(){
-        htmlManager.setPhrase(getTextFromClipboard());
+        String copiedString = getTextFromClipboard();
+        htmlManager.setPhrase(copiedString);
+        // TODO change this statements to try and add my own exception
         if (htmlManager.isValidPhrase()){
             if (currentPhrase.getOriginalPhrase().isEmpty().getValue()
                     || !currentPhrase.getOriginalPhrase().getValue().equals(htmlManager.getOriginalPhrase())) {
@@ -59,8 +66,10 @@ public class NewWordService {
                 openWindow();
             }
         } else if (isWindowOpen) {
+            // if phrase is invalid and window is open then close window
             closeWindow();
+        } else {
+            windowHandler.showToast("Phrase from clipboard is invalid:\n" + copiedString);
         }
-        // TODO toast - incorrect phrase in clipboard
     }
 }

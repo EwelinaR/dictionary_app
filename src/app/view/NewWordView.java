@@ -15,6 +15,7 @@ public class NewWordView implements View {
 
     private int hideWindowPointY = -250;
     private Stage newWordStage;
+    private Toast messageToast;
 
     private WindowAnimation windowAnimation;
 
@@ -23,6 +24,7 @@ public class NewWordView implements View {
         initScene(scene);
         createMainStage(scene, stage);
         windowAnimation = new WindowAnimation();
+        messageToast = new Toast(newWordStage);
     }
 
     /**
@@ -54,7 +56,6 @@ public class NewWordView implements View {
         newWordStage.initStyle(StageStyle.TRANSPARENT);
         newWordStage.setY(hideWindowPointY);
         newWordStage.setX((Screen.getPrimary().getVisualBounds().getWidth() - scene.getWidth()) / 2);
-        newWordStage.setTitle("New word");
         newWordStage.setAlwaysOnTop(true);
         newWordStage.setScene(scene);
         newWordStage.show();
@@ -75,6 +76,10 @@ public class NewWordView implements View {
         windowAnimation.reopen();
     }
 
+    @Override
+    public void showToast(String message){
+        messageToast.show(message);
+    }
 
     private class WindowAnimation extends AnimationTimer {
 

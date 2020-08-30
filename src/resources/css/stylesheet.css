@@ -12,3 +12,9 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0, 0, 0, 0.5), 10, 0.0, 0, 3);
     -fx-font-size: 0.9em;
 }
+
+#toast {
+    -fx-background-radius: 20;
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-padding: 10px;
+}

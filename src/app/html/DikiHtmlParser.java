@@ -54,12 +54,13 @@ public class DikiHtmlParser extends HtmlParser {
         List<String> phrases = getTagContent(container, "span", new String[]{"class"}, new String[]{"hw"});
         if(phrases.size() == 1)
             originalPhrase = removeTagAndAttributes(phrases.get(0));
-        if(phrases.size() > 1) {
+        else if(phrases.size() > 1) {
             phrases = phrases.stream().filter(phrase -> !phrase.startsWith("<a")).collect(Collectors.toList());
             if (phrases.size() > 0)
                 originalPhrase = phrases.get(0);
+        } else {
+            isValidHtml = false;
         }
-        isValidHtml = false;
     }
 
     @Override
