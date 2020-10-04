@@ -72,7 +72,7 @@ public class NewWordController implements Observer {
 
     @Override
     public void update() {
-        service.translatePhraseFromClipboard();
+        service.updateWindowBasingOnClipboard();
         if(currentPhrase.getAudioUrl().isEmpty()){
             audioButton.setDisable(true);
         } else{

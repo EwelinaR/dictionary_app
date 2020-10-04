@@ -69,11 +69,11 @@ class Toast {
         KeyFrame fadeInKey = new KeyFrame(Duration.millis(fadeDelay),
                 new KeyValue(stage.getScene().getRoot().opacityProperty(), 1));
         fadeInTimeline.getKeyFrames().add(fadeInKey);
-        fadeInTimeline.setOnFinished((ae) -> new Thread(() -> animateToast(fadeDelay)).start());
+        fadeInTimeline.setOnFinished((ae) -> new Thread(() -> playToastAnimation(fadeDelay)).start());
         fadeInTimeline.play();
     }
 
-    private void animateToast(int fadeDelay) {
+    private void playToastAnimation(int fadeDelay) {
         int toastDelay = 1500;
         try {
             Thread.sleep(toastDelay);

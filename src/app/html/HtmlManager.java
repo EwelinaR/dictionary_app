@@ -1,7 +1,9 @@
 package app.html;
 
+import app.exceptions.InvalidPhraseException;
 import app.model.PhraseDescription;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,27 +13,20 @@ import java.net.URL;
 public class HtmlManager {
 
     private HtmlParser parser;
-    private boolean isValidPhrase;
 
-    public void setPhrase(String phrase) {
+    public void loadPage(String phrase) throws IOException, InvalidPhraseException {
         parser = new DikiHtmlParser(phrase);
-        try {
-            URL url = new URL("https://www.diki.pl/" + phrase);
-            InputStream is = url.openStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        URL url = new URL("https://www.diki.pl/" + phrase);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.connect();
+        if (!connection.getResponseMessage().equals("OK")) throw new InvalidPhraseException();
 
-            parser.setPage(br);
+        InputStream is = url.openStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-            is.close();
-            br.close();
-        } catch (IOException ie) {
-            isValidPhrase = false;
-        }
-        isValidPhrase = parser.getOriginalPhrase() != null;
-    }
-
-    public boolean isValidPhrase() {
-        return isValidPhrase;
+        parser.setPage(br);
+        is.close();
+        br.close();
     }
 
     public String getOriginalPhrase() {

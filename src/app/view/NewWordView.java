@@ -63,17 +63,12 @@ public class NewWordView implements View {
 
     @Override
     public void open(){
-        windowAnimation.setIsOpen(true);
+        windowAnimation.reopen();
     }
 
     @Override
     public void close() {
         windowAnimation.setIsOpen(false);
-    }
-
-    @Override
-    public void reopen() {
-        windowAnimation.reopen();
     }
 
     @Override

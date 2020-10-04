@@ -1,11 +1,15 @@
 package app;
 
+import app.exceptions.InvalidPhraseException;
+import app.exceptions.NullClipboardException;
 import app.html.HtmlManager;
 import app.model.PhraseDescription;
 import app.view.NewWordView;
 import app.view.View;
 import javafx.scene.Scene;
 import javafx.scene.input.Clipboard;
+
+import java.io.IOException;
 
 public class NewWordService {
     private final Clipboard clipboard;
@@ -33,12 +37,7 @@ public class NewWordService {
         isWindowOpen = true;
     }
 
-    private void reopenWindow(){
-        windowHandler.reopen();
-        isWindowOpen = true;
-    }
-
-    private String getTextFromClipboard(){
+    private String getTextFromClipboard() throws NullClipboardException {
         if(clipboard.hasString()) {
             String text = clipboard.getString();
             text = text.trim();
@@ -49,27 +48,26 @@ public class NewWordService {
         return null;
     }
 
-    public void translatePhraseFromClipboard(){
-        String copiedString = getTextFromClipboard();
-        htmlManager.setPhrase(copiedString);
-        // TODO change this statements to try and add my own exception
-        if (htmlManager.isValidPhrase()){
-            if (currentPhrase.getOriginalPhrase().isEmpty().getValue()
-                    || !currentPhrase.getOriginalPhrase().getValue().equals(htmlManager.getOriginalPhrase())) {
+    public void updateWindowBasingOnClipboard(){
+        if (isWindowOpen) {
+            closeWindow();
+            return;
+        }
+        String copiedString = "";
+        try {
+            copiedString = getTextFromClipboard();
+            htmlManager.loadPage(copiedString);
+            if (!htmlManager.getOriginalPhrase().equals(currentPhrase.getOriginalPhrase().getValue())) {
                 // if phrase changed
                 htmlManager.updatePhrase(currentPhrase);
-                reopenWindow();
             }
-            else if (isWindowOpen) {
-                closeWindow();
-            } else {
-                openWindow();
-            }
-        } else if (isWindowOpen) {
-            // if phrase is invalid and window is open then close window
-            closeWindow();
-        } else {
-            windowHandler.showToast("Phrase from clipboard is invalid:\n" + copiedString);
+            openWindow();
+        } catch (NullClipboardException e){
+            windowHandler.showToast("The phrase from the clipboard is null.");
+        } catch (InvalidPhraseException e) {
+            windowHandler.showToast("The phrase from the clipboard is invalid:\n   " + copiedString);
+        } catch (IOException e) {
+            windowHandler.showToast("No Internet connection!");
         }
     }
 }
