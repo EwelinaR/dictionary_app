@@ -42,7 +42,7 @@
             </StackPane>
             <ImageView fx:id="imageRightArrow" fitHeight="20.0" fitWidth="22.0" layoutX="80.0" layoutY="91.0" onMouseClicked="#nextImage" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../img/arrow_right2.png" />
+                  <Image url="@../img/arrow_right.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
